@@ -1,11 +1,37 @@
-import React from "react";
+import React, { useState } from "react";
+import api from "../configs/api";
 
 function RegisterForm() {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+  const registerHandler = async (e) => {
+    e.preventDefault();
+    try {
+        const response = await api.post("/auth/register", {
+            username,
+            password
+        });
+        console.log(response);
+    } catch (error) {
+        setError(error.response?.data?.message || "خطایی رخ داده است.");
+    }
+  };
   return (
     <div>
-      <form>
-        <input type="text" name="name" placeholder="نام کاربری" />
-        <input type="password" name="password" id="" placeholder="رمز عبور" />
+      <form onSubmit={registerHandler}>
+        <input
+          type="text"
+          name="name"
+          placeholder="نام کاربری"
+          onChange={(e) => setUsername(e.target.value)}
+        />
+        <input
+          type="password"
+          name="password"
+          placeholder="رمز عبور"
+          onChange={(e) => setPassword(e.target.value)}
+        />
         <input
           type="password"
           name="password"
