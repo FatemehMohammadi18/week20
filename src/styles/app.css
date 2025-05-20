@@ -2,15 +2,13 @@
     font-family: "Vazir", system-ui, Avenir, Helvetica, Arial, sans-serif;
     line-height: 1.5;
     font-weight: 400;
-  }
-  
-  body {
     max-width: 1440px;
     margin: 0 auto;
     padding: 0rem 150px;
     text-align: center;
     background-color: #F7F8F8;
   }
+
   
   @font-face {
     font-family: Vazir;
