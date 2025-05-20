@@ -36,37 +36,49 @@ function RegisterForm() {
 
   return (
     <div>
-      {error && <p style={{ color: "red" }}>{error}</p>}
+      {error && <p className="text-red-500 text-sm mb-3">{error}</p>}
       <Formik
         initialValues={{ username: "", password: "", confirmPassword: "" }}
         validationSchema={RegisterSchema}
         onSubmit={registerHandler}
       >
         {() => (
-          <Form>
-            <Field type="text" name="username" placeholder="نام کاربری" />
+          <Form className="flex flex-col gap-4">
+            <Field
+              type="text"
+              name="username"
+              placeholder="نام کاربری"
+              className="p-3 rounded-2xl bg-[#F2F2F2] text-[#282828] text-sm font-light"
+            />
             <ErrorMessage
               name="username"
               component="div"
-              style={{ color: "red" }}
+              className="text-red-500 text-xs text-right"
             />
-            <Field type="password" name="password" placeholder="رمز عبور" />
+            <Field
+              type="password"
+              name="password"
+              placeholder="رمز عبور"
+              className="p-3 rounded-2xl bg-[#F2F2F2] text-[#282828] text-sm font-light"
+            />
             <ErrorMessage
               name="password"
               component="div"
-              style={{ color: "red" }}
+              className="text-red-500 text-xs text-right"
             />
             <Field
               type="password"
               name="confirmPassword"
               placeholder="تکرار رمز عبور"
+              className="p-3 rounded-2xl bg-[#F2F2F2] text-[#282828] text-sm font-light"
             />
             <ErrorMessage
               name="confirmPassword"
               component="div"
-              style={{ color: "red" }}
+              className="text-red-500 text-xs text-right"
             />
-            <button type="submit" disabled={loading}>
+            <button type="submit" disabled={loading}
+            className="bg-[#55A3F0] rounded-2xl text-white p-2.5">
               {loading ? "در حال ثبت نام..." : "ثبت نام"}
             </button>
           </Form>
