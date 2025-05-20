@@ -2,8 +2,10 @@ import { ErrorMessage, Field, Form, Formik } from "formik";
 import { useState } from "react";
 import api from "../configs/api";
 import * as Yup from "yup";
+import { useNavigate } from "react-router-dom";
 
 function LoginForm() {
+  const navigate = useNavigate();
   const [error, setError] = useState(null);
   const [token, setToken] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -27,6 +29,7 @@ function LoginForm() {
       setToken(token);
       localStorage.setItem("token", token);
       console.log(values, token);
+      navigate("/panelAdmin")
       resetForm();
     } catch (error) {
       setError(error.response?.data?.message || "خطایی رخ داده است.");
