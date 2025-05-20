@@ -1,45 +1,62 @@
 import React, { useState } from "react";
 import api from "../configs/api";
+import { ErrorMessage, Field, Form, Formik } from "formik";
 
 function RegisterForm() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
 
-  const registerHandler = async (e) => {
-    e.preventDefault();
+  const registerHandler = async (values, { resetForm }) => {
+    setLoading(true);
+    setError(null);
     try {
-        const response = await api.post("/auth/register", {
-            username,
-            password
-        });
-        console.log(response);
+      const response = await api.post("/auth/register", values);
+      console.log(response);
+      resetForm();
     } catch (error) {
-        setError(error.response?.data?.message || "خطایی رخ داده است.");
+      setError(error.response?.data?.message || "خطایی رخ داده است.");
+    } finally{
+      setLoading(false)
     }
   };
+
   return (
     <div>
-      <form onSubmit={registerHandler}>
-        <input
-          type="text"
-          name="name"
-          placeholder="نام کاربری"
-          onChange={(e) => setUsername(e.target.value)}
-        />
-        <input
-          type="password"
-          name="password"
-          placeholder="رمز عبور"
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <input
-          type="password"
-          name="password"
-          id=""
-          placeholder="تکرار رمز عبور"
-        />
-        <button type="submit">ثبت نام</button>
-      </form>
+      {error && <p style={{ color: "red" }}>{error}</p>}
+      <Formik
+        initialValues={{ username: "", password: "", confirmPassword: ""}}
+        onSubmit={registerHandler}
+      >
+        {() => (
+          <Form>
+            <Field type="text" name="username" placeholder="نام کاربری" />
+            <ErrorMessage
+              name="username"
+              component="div"
+              style={{ color: "red" }}
+            />
+            <Field type="password" name="password" placeholder="رمز عبور" />
+            <ErrorMessage
+              name="password"
+              component="div"
+              style={{ color: "red" }}
+            />
+            <Field
+              type="password"
+              name="confirmPassword"
+              placeholder="تکرار رمز عبور"
+            />
+            <ErrorMessage
+              name="confirmPassword"
+              component="div"
+              style={{ color: "red" }}
+            />
+            <button type="submit" disabled={loading}>
+            {loading ? "در حال ثبت نام..." : "ثبت نام"}
+            </button>
+          </Form>
+        )}
+      </Formik>
     </div>
   );
 }
