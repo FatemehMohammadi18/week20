@@ -46,8 +46,7 @@ function LoginForm() {
               component="div"
               style={{ color: "red" }}
             />
-            <button type="submit">
-              {" "}
+            <button type="submit" disabled={loading}>
               {loading ? "در حال ورود..." : "ورود"}
             </button>
           </Form>
