@@ -1,10 +1,24 @@
 import React, { useState } from "react";
 import api from "../configs/api";
 import { ErrorMessage, Field, Form, Formik } from "formik";
+import * as Yup from "yup";
 
 function RegisterForm() {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+
+  const RegisterSchema = Yup.object({
+    username: Yup.string()
+      .min(3, "نام کاربری باید حداقل 3 کاراکتر باشد.")
+      .max(50, "نام کاربری باید حداکثر 50 کاراکتر باشد.")
+      .required("نام کاربری الزامی است."),
+    password: Yup.string()
+      .min(5, "رمز عبور باید حداقل 5 کاراکتر باشد.")
+      .required("رمز عبور الزامی است."),
+    confirmPassword: Yup.string()
+      .oneOf([Yup.ref("password"), null], "رمزهای عبور یکسان نیستند.")
+      .required("تکرار رمز عبور الزامی است."),
+  });
 
   const registerHandler = async (values, { resetForm }) => {
     setLoading(true);
@@ -15,8 +29,8 @@ function RegisterForm() {
       resetForm();
     } catch (error) {
       setError(error.response?.data?.message || "خطایی رخ داده است.");
-    } finally{
-      setLoading(false)
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -24,7 +38,8 @@ function RegisterForm() {
     <div>
       {error && <p style={{ color: "red" }}>{error}</p>}
       <Formik
-        initialValues={{ username: "", password: "", confirmPassword: ""}}
+        initialValues={{ username: "", password: "", confirmPassword: "" }}
+        validationSchema={RegisterSchema}
         onSubmit={registerHandler}
       >
         {() => (
@@ -52,7 +67,7 @@ function RegisterForm() {
               style={{ color: "red" }}
             />
             <button type="submit" disabled={loading}>
-            {loading ? "در حال ثبت نام..." : "ثبت نام"}
+              {loading ? "در حال ثبت نام..." : "ثبت نام"}
             </button>
           </Form>
         )}

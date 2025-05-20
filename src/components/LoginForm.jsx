@@ -1,11 +1,22 @@
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import { useState } from "react";
 import api from "../configs/api";
+import * as Yup from "yup";
 
 function LoginForm() {
   const [error, setError] = useState(null);
   const [token, setToken] = useState(null);
   const [loading, setLoading] = useState(false);
+
+  const LoginSchema = Yup.object({
+    username: Yup.string()
+      .min(3, "نام کاربری باید حداقل 3 کاراکتر باشد.")
+      .max(50, "نام کاربری باید حداکثر 50 کاراکتر باشد.")
+      .required("نام کاربری خود را وارد کنید."),
+    password: Yup.string()
+      .min(5, "رمز عبور باید حداقل 5 کاراکتر باشد.")
+      .required("رمز عبور الزامی است."),
+  });
 
   const loginHandler = async (values, { resetForm }) => {
     setLoading(true);
@@ -29,6 +40,7 @@ function LoginForm() {
       {error && <p style={{ color: "red" }}>{error}</p>}
       <Formik
         initialValues={{ username: "", password: "" }}
+        validationSchema={LoginSchema}
         onSubmit={loginHandler}
       >
         {() => (
