@@ -10,7 +10,6 @@ const api = axios.create({
 axios.interceptors.request.use(
   (request) => {
     request.headers.Authorization = "token";
-    console.log(request);
     return request;
   },
   (error) => {
@@ -20,7 +19,6 @@ axios.interceptors.request.use(
 
 axios.interceptors.response.use(
   (response) => {
-    console.log(response);
     return response.data;
   },
   (error) => {
